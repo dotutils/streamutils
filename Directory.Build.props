@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+ 
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+    <DirectoryPackagesPropsPath>$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', 'Packages.props'))</DirectoryPackagesPropsPath>
+	<!-- There are 2 package sources defined in your configuration. When using central package management, please map your
+ package sources with package source mapping -->
+	<NoWarn>$(NoWarn);NU1507</NoWarn>
+  </PropertyGroup>
+
+</Project>

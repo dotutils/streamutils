@@ -1,0 +1,5 @@
+<Project>
+  <Import Project="dependabot\Packages.props" />
+  <ItemGroup>
+  </ItemGroup>
+</Project>
