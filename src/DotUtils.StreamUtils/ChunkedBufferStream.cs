@@ -9,13 +9,13 @@
 /// This is not supposed to bring performance benefits, but it allows to avoid nondeterministic
 /// GZipStream output for the identical input.
 /// </summary>
-public class GreedyBufferedStream : Stream
+public class ChunkedBufferStream : Stream
 {
     private readonly Stream _stream;
     private readonly byte[] _buffer;
     private int _position;
 
-    public GreedyBufferedStream(Stream stream, int bufferSize)
+    public ChunkedBufferStream(Stream stream, int bufferSize)
     {
         _stream = stream;
         _buffer = new byte[bufferSize];

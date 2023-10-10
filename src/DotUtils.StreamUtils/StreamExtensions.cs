@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Buffers;
+using System.Diagnostics;
 
 namespace DotUtils.StreamUtils;
 
@@ -24,6 +25,35 @@ public static class StreamExtensions
 
             totalRead += read;
             offset += read;
+        }
+
+        return totalRead;
+    }
+
+    public static int SkipBytes(this Stream stream, int bytesCount, bool throwOnEndOfStream)
+    {
+        byte[] buffer = ArrayPool<byte>.Shared.Rent(4096);
+        using var _ = new CleanupScope(() => ArrayPool<byte>.Shared.Return(buffer));
+        return SkipBytes(stream, bytesCount, throwOnEndOfStream, buffer);
+    }
+
+    public static int SkipBytes(this Stream stream, int bytesCount, bool throwOnEndOfStream, byte[] buffer)
+    {
+        int totalRead = 0;
+        while (totalRead < bytesCount)
+        {
+            int read = stream.Read(buffer, 0, Math.Min(bytesCount - totalRead, buffer.Length));
+            if (read == 0)
+            {
+                if (throwOnEndOfStream)
+                {
+                    throw new InvalidDataException("Unexpected end of stream.");
+                }
+
+                return totalRead;
+            }
+
+            totalRead += read;
         }
 
         return totalRead;

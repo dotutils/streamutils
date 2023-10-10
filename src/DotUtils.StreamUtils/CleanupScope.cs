@@ -1,6 +1,6 @@
 ﻿namespace DotUtils.StreamUtils;
 
-internal class CleanupScope : IDisposable
+internal readonly struct CleanupScope : IDisposable
 {
     private readonly Action _disposeAction;
 
