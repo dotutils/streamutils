@@ -32,6 +32,12 @@ public static class StreamExtensions
         return totalRead;
     }
 
+    public static long SkipBytes(this Stream stream)
+        => SkipBytes(stream, stream.Length, true);
+
+    public static long SkipBytes(this Stream stream, long bytesCount)
+        => SkipBytes(stream, bytesCount, true);
+
     private static bool CheckIsSkipNeeded(long bytesCount)
     {
         if (bytesCount is < 0 or > int.MaxValue)
@@ -88,6 +94,33 @@ public static class StreamExtensions
         return totalRead;
     }
 
+    public static byte[] ReadToEnd(this Stream stream)
+    {
+        if (stream.TryGetLength(out long length))
+        {
+            BinaryReader reader = new(stream);
+            return reader.ReadBytes((int)length);
+        }
+
+        using var ms = new MemoryStream();
+        stream.CopyTo(ms);
+        return ms.ToArray();
+    }
+
+    public static bool TryGetLength(this Stream stream, out long length)
+    {
+        try
+        {
+            length = stream.Length;
+            return true;
+        }
+        catch (NotSupportedException)
+        {
+            length = 0;
+            return false;
+        }
+    }
+
     public static Stream ToReadableSeekableStream(this Stream stream)
     {
         return TransparentReadStream.CreateSeekableStream(stream);
@@ -102,5 +135,16 @@ public static class StreamExtensions
     public static Stream Slice(this Stream stream, long length)
     {
         return new SubStream(stream, length);
+    }
+
+    /// <summary>
+    /// Creates a stream that concatenates the current stream with another stream.
+    /// </summary>
+    /// <param name="stream"></param>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public static Stream Concat(this Stream stream, Stream other)
+    {
+        return new ConcatenatedReadStream(stream, other);
     }
 }

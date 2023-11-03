@@ -9,5 +9,11 @@
  package sources with package source mapping -->
 	<NoWarn>$(NoWarn);NU1507</NoWarn>
   </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\key.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>False</DelaySign>
+  </PropertyGroup>
 
 </Project>

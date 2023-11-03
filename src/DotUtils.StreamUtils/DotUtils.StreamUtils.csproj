@@ -8,7 +8,7 @@
 	  <Nullable>enable</Nullable>
 	  <IsPackable>true</IsPackable>
 	  <!-- packaging properties -->
-	  <PackageVersion>0.0.4</PackageVersion>
+	  <PackageVersion>0.0.5</PackageVersion>
 	  <Title>DotUtils.StreamUtils library</Title>
 	  <PackageId>DotUtils.StreamUtils</PackageId>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -32,7 +32,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="DotUtils.StreamUtils.Tests" />
+		<InternalsVisibleTo Include="DotUtils.StreamUtils.Tests" PublicKey="002400000480000094000000060200000024000052534131000400000100010079149759f6aa0b6734b50cf528b956cdd082e1b2d9f01c348d7c577403f6160538a342df0ed95fa53a1f4015921c63c45746a14f9c2ec098f431fc619dc68346527d116f198b7f3438797db3a97dc2bb5a5617dcf7de38ae4ba8f3982819763f46047e0609e05a7d97523a0e8299f3a067c7e9cc318c3b8efeb6d10ebc6111c8" />
 	</ItemGroup>
 
 </Project>
