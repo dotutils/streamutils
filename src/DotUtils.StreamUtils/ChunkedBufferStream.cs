@@ -6,6 +6,7 @@
 /// So unlike the <see cref="BufferedStream"/> it never writes to the wrapped stream
 /// until it has full chunk or is closing.
 ///
+/// Expected usage scenario is when chained with GZipStream.
 /// This is not supposed to bring performance benefits, but it allows to avoid nondeterministic
 /// GZipStream output for the identical input.
 /// </summary>

@@ -9,6 +9,7 @@ public class TransparentReadStream : Stream
 {
     private readonly Stream _stream;
     private long _position;
+    private long _maxAllowedPosition = long.MaxValue;
 
     public static Stream CreateSeekableStream(Stream stream)
     {
@@ -30,6 +31,15 @@ public class TransparentReadStream : Stream
         _stream = stream;
     }
 
+    public int? BytesCountAllowedToRead
+    {
+        set => _maxAllowedPosition = value.HasValue ? _position + value.Value : long.MaxValue;
+    }
+
+    // if we haven't constrained the allowed read size - do not report it being unfinished either.
+    public int BytesCountAllowedToReadRemaining =>
+        _maxAllowedPosition == long.MaxValue ? 0 : (int)(_maxAllowedPosition - _position);
+
     public override bool CanRead => _stream.CanRead;
     public override bool CanSeek => true;
     public override bool CanWrite => false;
@@ -47,6 +57,11 @@ public class TransparentReadStream : Stream
 
     public override int Read(byte[] buffer, int offset, int count)
     {
+        if (_position + count > _maxAllowedPosition)
+        {
+            count = (int)(_maxAllowedPosition - _position);
+        }
+
         int cnt = _stream.Read(buffer, offset, count);
         _position += cnt;
         return cnt;

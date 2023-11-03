@@ -7,10 +7,11 @@
 	  <Nullable>enable</Nullable>
 	  <IsPackable>true</IsPackable>
 	  <!-- packaging properties -->
-	  <PackageVersion>0.0.2</PackageVersion>
+	  <PackageVersion>0.0.3</PackageVersion>
 	  <Title>DotUtils.StreamUtils library</Title>
 	  <PackageId>DotUtils.StreamUtils</PackageId>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <!-- SourceLink properties -->
 	  <PublishRepositoryUrl>true</PublishRepositoryUrl>
 	  <EmbedUntrackedSources>true</EmbedUntrackedSources>
