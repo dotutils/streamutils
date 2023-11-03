@@ -1,4 +1,6 @@
-﻿using System.Buffers;
+﻿#if NET
+using System.Buffers;
+#endif
 using System.Diagnostics;
 
 namespace DotUtils.StreamUtils;
@@ -30,19 +32,46 @@ public static class StreamExtensions
         return totalRead;
     }
 
-    public static int SkipBytes(this Stream stream, int bytesCount, bool throwOnEndOfStream)
+    private static bool CheckIsSkipNeeded(long bytesCount)
     {
-        byte[] buffer = ArrayPool<byte>.Shared.Rent(4096);
+        if (bytesCount is < 0 or > int.MaxValue)
+        {
+            throw new ArgumentOutOfRangeException(nameof(bytesCount), $"Attempt to skip {bytesCount} bytes, only non-negative offset up to int.MaxValue is allowed.");
+        }
+
+        return bytesCount > 0;
+    }
+
+    public static int SkipBytes(this Stream stream, long bytesCount, bool throwOnEndOfStream)
+    {
+        if (!CheckIsSkipNeeded(bytesCount))
+        {
+            return 0;
+        }
+
+        const int bufferSize = 4096;
+        byte[] buffer;
+
+#if NET
+        buffer = ArrayPool<byte>.Shared.Rent(bufferSize);
         using var _ = new CleanupScope(() => ArrayPool<byte>.Shared.Return(buffer));
+#else
+        buffer = new byte[bufferSize];
+#endif
         return SkipBytes(stream, bytesCount, throwOnEndOfStream, buffer);
     }
 
-    public static int SkipBytes(this Stream stream, int bytesCount, bool throwOnEndOfStream, byte[] buffer)
+    public static int SkipBytes(this Stream stream, long bytesCount, bool throwOnEndOfStream, byte[] buffer)
     {
+        if (!CheckIsSkipNeeded(bytesCount))
+        {
+            return 0;
+        }
+
         int totalRead = 0;
         while (totalRead < bytesCount)
         {
-            int read = stream.Read(buffer, 0, Math.Min(bytesCount - totalRead, buffer.Length));
+            int read = stream.Read(buffer, 0, (int)Math.Min(bytesCount - totalRead, buffer.Length));
             if (read == 0)
             {
                 if (throwOnEndOfStream)

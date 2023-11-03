@@ -1,4 +1,6 @@
-﻿using System.Buffers;
+﻿#if NET
+using System.Buffers;
+#endif
 
 namespace DotUtils.StreamUtils;
 
@@ -47,7 +49,7 @@ public class TransparentReadStream : Stream
     public override long Position
     {
         get => _position;
-        set => SkipBytes(value - _position);
+        set => this.SkipBytes(value - _position, true);
     }
 
     public override void Flush()
@@ -74,7 +76,7 @@ public class TransparentReadStream : Stream
             throw new InvalidOperationException("Only seeking from SeekOrigin.Current is supported.");
         }
 
-        SkipBytes(offset);
+        this.SkipBytes(offset, true);
 
         return _position;
     }
@@ -87,29 +89,6 @@ public class TransparentReadStream : Stream
     public override void Write(byte[] buffer, int offset, int count)
     {
         throw new InvalidOperationException("Writing is not supported.");
-    }
-
-    private void SkipBytes(long count)
-    {
-        if(count < 0)
-        {
-            throw new InvalidOperationException("Seeking backwards is not supported.");
-        }
-
-        if(count == 0)
-        {
-            return;
-        }
-
-        byte[] buffer = ArrayPool<byte>.Shared.Rent((int)count);
-        try
-        {
-            _position += _stream.ReadAtLeast(buffer, 0, (int)count, throwOnEndOfStream: true);
-        }
-        finally
-        {
-            ArrayPool<byte>.Shared.Return(buffer);
-        }
     }
 
     public override void Close() => _stream.Close();

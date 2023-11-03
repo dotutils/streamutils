@@ -2,12 +2,13 @@
 
   <PropertyGroup>
 	  <OutputType>Library</OutputType>
-	  <TargetFramework>net6.0</TargetFramework>
+	  <TargetFrameworks>net472;net6.0</TargetFrameworks>
+	  <LangVersion>latest</LangVersion>
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <Nullable>enable</Nullable>
 	  <IsPackable>true</IsPackable>
 	  <!-- packaging properties -->
-	  <PackageVersion>0.0.3</PackageVersion>
+	  <PackageVersion>0.0.4</PackageVersion>
 	  <Title>DotUtils.StreamUtils library</Title>
 	  <PackageId>DotUtils.StreamUtils</PackageId>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
