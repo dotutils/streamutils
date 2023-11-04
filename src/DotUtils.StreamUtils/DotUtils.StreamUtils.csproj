@@ -8,7 +8,7 @@
 	  <Nullable>enable</Nullable>
 	  <IsPackable>true</IsPackable>
 	  <!-- packaging properties -->
-	  <PackageVersion>0.0.5</PackageVersion>
+	  <PackageVersion>0.0.6</PackageVersion>
 	  <Title>DotUtils.StreamUtils library</Title>
 	  <PackageId>DotUtils.StreamUtils</PackageId>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -20,6 +20,10 @@
 	  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
+	<ItemGroup>
+		<Using Remove="System.Net.Http" />
+	</ItemGroup>
+		
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub">
 			<PrivateAssets>all</PrivateAssets>
