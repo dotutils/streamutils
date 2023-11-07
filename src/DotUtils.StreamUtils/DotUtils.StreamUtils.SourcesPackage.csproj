@@ -18,7 +18,7 @@
     <PackageVersion>0.0.6</PackageVersion>
     <Title>DotUtils.StreamUtils.Sources</Title>
     <PackageId>DotUtils.StreamUtils.Sources</PackageId>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <!-- SourceLink properties -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
