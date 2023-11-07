@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotUtils.StreamUtils", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotUtils.StreamUtils.Tests", "test\DotUtils.StreamUtils.Tests\DotUtils.StreamUtils.Tests.csproj", "{1FA84D66-4AD3-4174-A998-58BD39D57670}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotUtils.StreamUtils.SourcesPackage", "src\DotUtils.StreamUtils\DotUtils.StreamUtils.SourcesPackage.csproj", "{D89B85EC-EF8B-4A01-A49A-5CD500B634AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{1FA84D66-4AD3-4174-A998-58BD39D57670}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FA84D66-4AD3-4174-A998-58BD39D57670}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FA84D66-4AD3-4174-A998-58BD39D57670}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D89B85EC-EF8B-4A01-A49A-5CD500B634AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D89B85EC-EF8B-4A01-A49A-5CD500B634AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D89B85EC-EF8B-4A01-A49A-5CD500B634AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D89B85EC-EF8B-4A01-A49A-5CD500B634AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A472E025-5923-4002-ACE2-4B341F197375} = {ACD0E940-BE63-49DA-BF0C-D75FDDEFE4F8}
 		{1FA84D66-4AD3-4174-A998-58BD39D57670} = {F579A697-7520-4DE9-98E5-83BFA0499FDB}
+		{D89B85EC-EF8B-4A01-A49A-5CD500B634AA} = {ACD0E940-BE63-49DA-BF0C-D75FDDEFE4F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2EB1123A-2A86-4AFE-B3EB-21A0C1809C48}

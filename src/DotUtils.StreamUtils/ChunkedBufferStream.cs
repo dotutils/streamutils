@@ -1,4 +1,7 @@
-﻿namespace DotUtils.StreamUtils;
+﻿using System;
+using System.IO;
+
+namespace DotUtils.StreamUtils;
 
 /// <summary>
 /// This is write-only, append-only stream that always buffers the wrapped stream

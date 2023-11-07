@@ -1,4 +1,7 @@
-﻿namespace DotUtils.StreamUtils;
+﻿using System;
+using System.IO;
+
+namespace DotUtils.StreamUtils;
 
 /// <summary>
 /// Bounded read-only, forward-only view over an underlying stream.

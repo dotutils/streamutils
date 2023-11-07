@@ -1,7 +1,9 @@
 ﻿#if NET
 using System.Buffers;
 #endif
+using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace DotUtils.StreamUtils;
 

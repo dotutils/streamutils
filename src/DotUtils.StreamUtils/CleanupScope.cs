@@ -1,4 +1,6 @@
-﻿namespace DotUtils.StreamUtils;
+﻿using System;
+
+namespace DotUtils.StreamUtils;
 
 internal readonly struct CleanupScope : IDisposable
 {

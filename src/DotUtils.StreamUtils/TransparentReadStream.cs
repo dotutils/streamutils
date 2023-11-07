@@ -1,4 +1,6 @@
-﻿#if NET
+﻿using System;
+using System.IO;
+#if NET
 using System.Buffers;
 #endif
 

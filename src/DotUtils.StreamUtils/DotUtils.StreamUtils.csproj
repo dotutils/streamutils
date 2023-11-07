@@ -4,7 +4,6 @@
 	  <OutputType>Library</OutputType>
 	  <TargetFrameworks>net472;net6.0</TargetFrameworks>
 	  <LangVersion>latest</LangVersion>
-	  <ImplicitUsings>enable</ImplicitUsings>
 	  <Nullable>enable</Nullable>
 	  <IsPackable>true</IsPackable>
 	  <!-- packaging properties -->

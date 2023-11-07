@@ -1,4 +1,9 @@
-﻿namespace DotUtils.StreamUtils;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+namespace DotUtils.StreamUtils;
 
 public class ConcatenatedReadStream : Stream
 {
