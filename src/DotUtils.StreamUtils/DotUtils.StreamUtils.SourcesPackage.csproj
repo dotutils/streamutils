@@ -1,5 +1,11 @@
 ﻿<Project>
 
+  <PropertyGroup>
+	<!-- Redirect outputs to prevent collisions with the kib package -->
+	<BaseOutputPath>bin2</BaseOutputPath>
+	<BaseIntermediateOutputPath>obj2</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
 
   <PropertyGroup>
@@ -23,6 +29,15 @@
     <!-- SourceLink properties -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="bin\**" />
+    <Compile Remove="obj\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <EmbeddedResource Remove="obj\**" />
+    <None Remove="bin\**" />
+    <None Remove="obj\**" />
+  </ItemGroup>
   
     <ItemGroup>
         <None Include="..\..\README.md" Pack="true" PackagePath="\" />

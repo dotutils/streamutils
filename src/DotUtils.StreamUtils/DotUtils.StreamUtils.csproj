@@ -19,6 +19,15 @@
 	  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="bin2\**" />
+    <Compile Remove="obj2\**" />
+    <EmbeddedResource Remove="bin2\**" />
+    <EmbeddedResource Remove="obj2\**" />
+    <None Remove="bin2\**" />
+    <None Remove="obj2\**" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<Using Remove="System.Net.Http" />
 	</ItemGroup>
