@@ -15,7 +15,7 @@ public class TransparentReadStream : Stream
     private long _position;
     private long _maxAllowedPosition = long.MaxValue;
 
-    public static Stream CreateSeekableStream(Stream stream)
+    public static Stream EnsureSeekableStream(Stream stream)
     {
         if (stream.CanSeek)
         {
@@ -23,6 +23,21 @@ public class TransparentReadStream : Stream
         }
 
         if(!stream.CanRead)
+        {
+            throw new InvalidOperationException("Stream must be readable.");
+        }
+
+        return new TransparentReadStream(stream);
+    }
+
+    public static TransparentReadStream EnsureTransparentReadStream(Stream stream)
+    {
+        if (stream is TransparentReadStream transparentReadStream)
+        {
+            return transparentReadStream;
+        }
+
+        if (!stream.CanRead)
         {
             throw new InvalidOperationException("Stream must be readable.");
         }
@@ -75,7 +90,7 @@ public class TransparentReadStream : Stream
     {
         if(origin != SeekOrigin.Current)
         {
-            throw new InvalidOperationException("Only seeking from SeekOrigin.Current is supported.");
+            throw new NotSupportedException("Only seeking from SeekOrigin.Current is supported.");
         }
 
         this.SkipBytes(offset, true);
@@ -85,12 +100,12 @@ public class TransparentReadStream : Stream
 
     public override void SetLength(long value)
     {
-        throw new InvalidOperationException("Expanding stream is not supported.");
+        throw new NotSupportedException("Expanding stream is not supported.");
     }
 
     public override void Write(byte[] buffer, int offset, int count)
     {
-        throw new InvalidOperationException("Writing is not supported.");
+        throw new NotSupportedException("Writing is not supported.");
     }
 
     public override void Close() => _stream.Close();

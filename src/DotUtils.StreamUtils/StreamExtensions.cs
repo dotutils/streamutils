@@ -125,7 +125,7 @@ public static class StreamExtensions
 
     public static Stream ToReadableSeekableStream(this Stream stream)
     {
-        return TransparentReadStream.CreateSeekableStream(stream);
+        return TransparentReadStream.EnsureSeekableStream(stream);
     }
 
     /// <summary>
