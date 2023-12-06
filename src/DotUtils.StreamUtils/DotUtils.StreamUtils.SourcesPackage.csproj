@@ -21,11 +21,13 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     
-    <PackageVersion>0.0.6</PackageVersion>
+    <PackageVersion>0.0.7</PackageVersion>
     <Title>DotUtils.StreamUtils.Sources</Title>
     <PackageId>DotUtils.StreamUtils.Sources</PackageId>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/dotutils/streamutils</PackageProjectUrl>
+    <PackageIcon>icon.jpeg</PackageIcon>
     <!-- SourceLink properties -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
@@ -41,6 +43,7 @@
   
     <ItemGroup>
         <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+        <None Include="..\..\icon.jpeg" Pack="true" PackagePath="\" />
     </ItemGroup>
 
   <ItemGroup>

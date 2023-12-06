@@ -7,11 +7,13 @@
 	  <Nullable>enable</Nullable>
 	  <IsPackable>true</IsPackable>
 	  <!-- packaging properties -->
-	  <PackageVersion>0.0.6</PackageVersion>
+	  <PackageVersion>0.0.7</PackageVersion>
 	  <Title>DotUtils.StreamUtils library</Title>
 	  <PackageId>DotUtils.StreamUtils</PackageId>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <PackageProjectUrl>https://github.com/dotutils/streamutils</PackageProjectUrl>
+	  <PackageIcon>icon.jpeg</PackageIcon>
 	  <!-- SourceLink properties -->
 	  <PublishRepositoryUrl>true</PublishRepositoryUrl>
 	  <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -41,6 +43,7 @@
 
 	<ItemGroup>
 		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
+		<None Include="..\..\icon.jpeg" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>
