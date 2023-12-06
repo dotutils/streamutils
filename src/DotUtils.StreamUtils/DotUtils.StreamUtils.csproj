@@ -12,6 +12,7 @@
 	  <PackageId>DotUtils.StreamUtils</PackageId>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <PackageIcon>icon.jpeg</PackageIcon>
 	  <!-- SourceLink properties -->
 	  <PublishRepositoryUrl>true</PublishRepositoryUrl>
 	  <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -41,6 +42,7 @@
 
 	<ItemGroup>
 		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
+		<None Include="..\..\icon.jpeg" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>
