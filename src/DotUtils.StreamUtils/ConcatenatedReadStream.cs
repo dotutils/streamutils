@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DotUtils.StreamUtils;
 
@@ -69,6 +71,90 @@ public class ConcatenatedReadStream : Stream
         _position += totalBytesRead;
         return totalBytesRead;
     }
+
+    public override int ReadByte()
+    {
+        while (_streams.Count > 0)
+        {
+            int value = _streams.Peek().ReadByte();
+            if (value < 0)
+            {
+                _streams.Dequeue().Dispose();
+                continue;
+            }
+
+            _position++;
+            return value;
+        }
+
+        return -1;
+    }
+
+    public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+    {
+        int totalBytesRead = 0;
+
+        while (count > 0 && _streams.Count > 0)
+        {
+            int bytesRead = await _streams.Peek().ReadAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
+            if (bytesRead == 0)
+            {
+                _streams.Dequeue().Dispose();
+                continue;
+            }
+
+            totalBytesRead += bytesRead;
+            offset += bytesRead;
+            count -= bytesRead;
+        }
+
+        _position += totalBytesRead;
+        return totalBytesRead;
+    }
+
+#if NET
+    public override int Read(Span<byte> buffer)
+    {
+        int totalBytesRead = 0;
+
+        while (!buffer.IsEmpty && _streams.Count > 0)
+        {
+            int bytesRead = _streams.Peek().Read(buffer);
+            if (bytesRead == 0)
+            {
+                _streams.Dequeue().Dispose();
+                continue;
+            }
+
+            totalBytesRead += bytesRead;
+            buffer = buffer.Slice(bytesRead);
+        }
+
+        _position += totalBytesRead;
+        return totalBytesRead;
+    }
+
+    public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+    {
+        int totalBytesRead = 0;
+
+        while (!buffer.IsEmpty && _streams.Count > 0)
+        {
+            int bytesRead = await _streams.Peek().ReadAsync(buffer, cancellationToken).ConfigureAwait(false);
+            if (bytesRead == 0)
+            {
+                _streams.Dequeue().Dispose();
+                continue;
+            }
+
+            totalBytesRead += bytesRead;
+            buffer = buffer.Slice(bytesRead);
+        }
+
+        _position += totalBytesRead;
+        return totalBytesRead;
+    }
+#endif
 
     public override long Seek(long offset, SeekOrigin origin)
     {
