@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
-#if NET
-using System.Buffers;
-#endif
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DotUtils.StreamUtils;
 
@@ -74,6 +73,11 @@ public class TransparentReadStream : Stream
         _stream.Flush();
     }
 
+    public override Task FlushAsync(CancellationToken cancellationToken)
+    {
+        return _stream.FlushAsync(cancellationToken);
+    }
+
     public override int Read(byte[] buffer, int offset, int count)
     {
         if (_position + count > _maxAllowedPosition)
@@ -85,6 +89,59 @@ public class TransparentReadStream : Stream
         _position += cnt;
         return cnt;
     }
+
+    public override int ReadByte()
+    {
+        if (_position + 1 <= _maxAllowedPosition)
+        {
+            int value = _stream.ReadByte();
+            if (value >= 0)
+            {
+                _position++;
+                return value;
+            }
+        }
+
+        return -1;
+    }
+
+    public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+    {
+        if (_position + count > _maxAllowedPosition)
+        {
+            count = (int)(_maxAllowedPosition - _position);
+        }
+
+        int cnt = await _stream.ReadAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
+        _position += cnt;
+        return cnt;
+    }
+
+#if NET
+    public override int Read(Span<byte> buffer)
+    {
+        if (_position + buffer.Length > _maxAllowedPosition)
+        {
+            buffer = buffer.Slice(0, (int)(_maxAllowedPosition - _position));
+        }
+
+        int cnt = _stream.Read(buffer);
+        _position += cnt;
+        return cnt;
+    }
+
+    public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+    {
+        if (_position + buffer.Length > _maxAllowedPosition)
+        {
+            buffer = buffer.Slice(0, (int)(_maxAllowedPosition - _position));
+        }
+
+        int cnt = await _stream.ReadAsync(buffer, cancellationToken).ConfigureAwait(false);
+        _position += cnt;
+        return cnt;
+    }
+#endif
 
     public override long Seek(long offset, SeekOrigin origin)
     {
