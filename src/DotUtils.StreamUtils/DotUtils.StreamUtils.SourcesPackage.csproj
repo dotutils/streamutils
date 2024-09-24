@@ -21,7 +21,6 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     
-    <PackageVersion>0.0.7</PackageVersion>
     <Title>DotUtils.StreamUtils.Sources</Title>
     <PackageId>DotUtils.StreamUtils.Sources</PackageId>
     <PackageReadmeFile>README.md</PackageReadmeFile>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DotUtils.StreamUtils;
 
@@ -57,6 +59,77 @@ public class ChunkedBufferStream : Stream
             }
         } while (count > 0);
     }
+
+    public override void WriteByte(byte value)
+    {
+        if (_position == _buffer.Length)
+        {
+            Flush();
+        }
+
+        _buffer[_position++] = value;
+    }
+
+    public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+    {
+        // Appends input to the buffer until it is full - then flushes it to the wrapped stream.
+        // Repeat above until all input is processed.
+
+        int srcOffset = offset;
+        do
+        {
+            int currentCount = Math.Min(count, _buffer.Length - _position);
+            Buffer.BlockCopy(buffer, srcOffset, _buffer, _position, currentCount);
+            _position += currentCount;
+            count -= currentCount;
+            srcOffset += currentCount;
+
+            if (_position == _buffer.Length)
+            {
+                await FlushAsync(cancellationToken).ConfigureAwait(false);
+            }
+        } while (count > 0);
+    }
+
+#if NET
+    public override void Write(ReadOnlySpan<byte> buffer)
+    {
+        // Appends input to the buffer until it is full - then flushes it to the wrapped stream.
+        // Repeat above until all input is processed.
+
+        do
+        {
+            int currentCount = Math.Min(buffer.Length, _buffer.Length - _position);
+            buffer.CopyTo(_buffer.AsSpan(_position, currentCount));
+            _position += currentCount;
+            buffer = buffer.Slice(currentCount);
+
+            if (_position == _buffer.Length)
+            {
+                Flush();
+            }
+        } while (!buffer.IsEmpty);
+    }
+
+    public override async ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
+    {
+        // Appends input to the buffer until it is full - then flushes it to the wrapped stream.
+        // Repeat above until all input is processed.
+
+        do
+        {
+            int currentCount = Math.Min(buffer.Length, _buffer.Length - _position);
+            buffer.CopyTo(_buffer.AsMemory(_position, currentCount));
+            _position += currentCount;
+            buffer = buffer.Slice(currentCount);
+
+            if (_position == _buffer.Length)
+            {
+                await FlushAsync(cancellationToken).ConfigureAwait(false);
+            }
+        } while (!buffer.IsEmpty);
+    }
+#endif
 
     public override bool CanRead => false;
     public override bool CanSeek => false;
