@@ -4,35 +4,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
+using static DotUtils.StreamUtils.Tests.StreamTestExtensions;
 
 namespace DotUtils.StreamUtils.Tests
 {
     public class ChunkedBufferStreamTests
     {
-        [Fact]
-        public void Write_CusesChunking()
+        [Theory]
+        [MemberData(nameof(StreamTestExtensions.EnumerateReadFunctionTypes), MemberType = typeof(StreamTestExtensions))]
+        public void Write_CusesChunking(StreamFunctionType streamFunctionType)
         {
             int chunkSize = 3;
             byte[] bytes = new byte[100];
             using MemoryStream ms = new(bytes);
             using Stream stream = new ChunkedBufferStream(ms, chunkSize);
 
-            stream.Write(new byte[]{1,2});
+            WriteBytes writeBytes = stream.GetWriteFunc(streamFunctionType);
+
+            writeBytes(new byte[]{1,2});
             bytes.Should().AllBeEquivalentTo(0);
 
-            stream.Write(new byte[] { 3, 4 });
+            writeBytes(new byte[] { 3, 4 });
             bytes.Take(3).Should().BeEquivalentTo(new byte[] { 1, 2, 3 });
             bytes.Skip(3).Should().AllBeEquivalentTo(0);
 
-            stream.Write(new byte[] { 5, 6 });
+            writeBytes(new byte[] { 5, 6 });
             bytes.Take(6).Should().BeEquivalentTo(new byte[] { 1, 2, 3, 4, 5, 6 });
             bytes.Skip(6).Should().AllBeEquivalentTo(0);
 
-            stream.Write(new byte[] { 7, 8 });
+            writeBytes(new byte[] { 7, 8 });
             bytes.Take(6).Should().BeEquivalentTo(new byte[] { 1, 2, 3, 4, 5, 6 });
             bytes.Skip(6).Should().AllBeEquivalentTo(0);
 
-            stream.Write(new byte[] { 9, 10, 11, 12, 13, 14, 15, 16 });
+            writeBytes(new byte[] { 9, 10, 11, 12, 13, 14, 15, 16 });
             bytes.Take(15).Should().BeEquivalentTo(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 });
             bytes.Skip(15).Should().AllBeEquivalentTo(0);
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
+using static DotUtils.StreamUtils.Tests.StreamTestExtensions;
 
 namespace DotUtils.StreamUtils.Tests
 {
@@ -29,8 +30,9 @@ namespace DotUtils.StreamUtils.Tests
             stream.ReadByte().Should().Be(-1);
         }
 
-        [Fact]
-        public void Read_ReadsStreamSequentialy()
+        [Theory]
+        [MemberData(nameof(StreamTestExtensions.EnumerateReadFunctionTypes), MemberType = typeof(StreamTestExtensions))]
+        public void Read_ReadsStreamSequentialy(StreamFunctionType streamFunctionType)
         {
             using MemoryStream ms1 = new(new byte[] { 1, 2, 3 });
             using MemoryStream ms2 = new(new byte[] { 4 });
@@ -39,36 +41,39 @@ namespace DotUtils.StreamUtils.Tests
 
             Stream stream = new ConcatenatedReadStream(ms1, ms2, ms3, ms4);
 
+            ReadBytes readBytes = stream.GetReadFunc(streamFunctionType);
+
             var readBuffer = new byte[2];
 
-            stream.Read(readBuffer).Should().Be(2);
+            readBytes(readBuffer).Should().Be(2);
             readBuffer.Should().BeEquivalentTo(new byte[] { 1, 2 });
 
-            stream.Read(readBuffer).Should().Be(2);
+            readBytes(readBuffer).Should().Be(2);
             readBuffer.Should().BeEquivalentTo(new byte[] { 3, 4 });
 
-            stream.Read(readBuffer).Should().Be(2);
+            readBytes(readBuffer).Should().Be(2);
             readBuffer.Should().BeEquivalentTo(new byte[] { 5, 6 });
 
-            stream.Read(readBuffer).Should().Be(2);
+            readBytes(readBuffer).Should().Be(2);
             readBuffer.Should().BeEquivalentTo(new byte[] { 7, 8 });
 
             // zero out for assertion clarity.
             Array.Clear(readBuffer);
 
-            stream.Read(readBuffer).Should().Be(1);
+            readBytes(readBuffer).Should().Be(1);
             readBuffer.Should().BeEquivalentTo(new byte[] { 9, 0 });
 
             // zero out for assertion clarity.
             Array.Clear(readBuffer);
 
             // cannot read anymore
-            stream.Read(readBuffer).Should().Be(0);
+            readBytes(readBuffer).Should().Be(0);
             readBuffer.Should().BeEquivalentTo(new byte[] { 0, 0 });
         }
 
-        [Fact]
-        public void Read_ReadsStreamSequentialy_UsingMultipleSubstreams()
+        [Theory]
+        [MemberData(nameof(StreamTestExtensions.EnumerateReadFunctionTypes), MemberType = typeof(StreamTestExtensions))]
+        public void Read_ReadsStreamSequentialy_UsingMultipleSubstreams(StreamFunctionType streamFunctionType)
         {
             using MemoryStream ms1 = new(new byte[] { 1, 2, 3 });
             using MemoryStream ms2 = new(new byte[] { 4 });
@@ -77,25 +82,27 @@ namespace DotUtils.StreamUtils.Tests
 
             Stream stream = new ConcatenatedReadStream(ms1, ms2, ms3, ms4);
 
+            ReadBytes readBytes = stream.GetReadFunc(streamFunctionType);
+
             var readBuffer = new byte[5];
 
-            stream.Read(readBuffer).Should().Be(5);
+            readBytes(readBuffer).Should().Be(5);
             readBuffer.Should().BeEquivalentTo(new byte[] { 1, 2, 3, 4, 5 });
 
-            stream.Read(readBuffer).Should().Be(5);
+            readBytes(readBuffer).Should().Be(5);
             readBuffer.Should().BeEquivalentTo(new byte[] { 6, 7, 8, 9, 10 });
 
             // zero out for assertion clarity.
             Array.Clear(readBuffer);
 
-            stream.Read(readBuffer).Should().Be(1);
+            readBytes(readBuffer).Should().Be(1);
             readBuffer.Should().BeEquivalentTo(new byte[] { 11, 0, 0, 0, 0 });
 
             // zero out for assertion clarity.
             Array.Clear(readBuffer);
 
             // cannot read anymore
-            stream.Read(readBuffer).Should().Be(0);
+            readBytes(readBuffer).Should().Be(0);
             readBuffer.Should().BeEquivalentTo(new byte[] { 0, 0, 0, 0, 0 });
         }
     }
