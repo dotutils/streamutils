@@ -99,7 +99,11 @@ public class ConcatenatedReadStream : Stream
             int bytesRead = await _streams.Peek().ReadAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
             if (bytesRead == 0)
             {
+#if NET
+                await _streams.Dequeue().DisposeAsync().ConfigureAwait(false);
+#else
                 _streams.Dequeue().Dispose();
+#endif
                 continue;
             }
 

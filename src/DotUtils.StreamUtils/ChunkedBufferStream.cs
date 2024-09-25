@@ -62,12 +62,12 @@ public class ChunkedBufferStream : Stream
 
     public override void WriteByte(byte value)
     {
+        _buffer[_position++] = value;
+
         if (_position == _buffer.Length)
         {
             Flush();
         }
-
-        _buffer[_position++] = value;
     }
 
     public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
@@ -100,7 +100,7 @@ public class ChunkedBufferStream : Stream
         do
         {
             int currentCount = Math.Min(buffer.Length, _buffer.Length - _position);
-            buffer.CopyTo(_buffer.AsSpan(_position, currentCount));
+            buffer.Slice(0, currentCount).CopyTo(_buffer.AsSpan(_position, currentCount));
             _position += currentCount;
             buffer = buffer.Slice(currentCount);
 
@@ -119,7 +119,7 @@ public class ChunkedBufferStream : Stream
         do
         {
             int currentCount = Math.Min(buffer.Length, _buffer.Length - _position);
-            buffer.CopyTo(_buffer.AsMemory(_position, currentCount));
+            buffer.Slice(0, currentCount).CopyTo(_buffer.AsMemory(_position, currentCount));
             _position += currentCount;
             buffer = buffer.Slice(currentCount);
 
