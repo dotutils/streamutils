@@ -31,6 +31,7 @@ namespace DotUtils.StreamUtils.Tests
             ms1.ReadByte().Should().Be(-1);
         }
 
+        [Theory]
         [MemberData(nameof(StreamTestExtensions.EnumerateReadFunctionTypes), MemberType = typeof(StreamTestExtensions))]
         public void Read_ReadsOnlyAllowedBounderies(StreamFunctionType streamFunctionType)
         {

@@ -31,6 +31,7 @@ namespace DotUtils.StreamUtils.Tests
             stream.Position.Should().Be(2);
         }
 
+        [Theory]
         [MemberData(nameof(StreamTestExtensions.EnumerateReadFunctionTypes), MemberType = typeof(StreamTestExtensions))]
         public void Read_TracksPosition(StreamFunctionType streamFunctionType)
         {
@@ -60,6 +61,7 @@ namespace DotUtils.StreamUtils.Tests
             stream.Position.Should().Be(3);
         }
 
+        [Theory]
         [MemberData(nameof(StreamTestExtensions.EnumerateReadFunctionTypes), MemberType = typeof(StreamTestExtensions))]
         public void Seek_TracksPosition(StreamFunctionType streamFunctionType)
         {
@@ -94,6 +96,7 @@ namespace DotUtils.StreamUtils.Tests
             stream.Position.Should().Be(5);
         }
 
+        [Theory]
         [MemberData(nameof(StreamTestExtensions.EnumerateReadFunctionTypes), MemberType = typeof(StreamTestExtensions))]
         public void Read_ConstraintsBytesCountAllowedToRead(StreamFunctionType streamFunctionType)
         {
