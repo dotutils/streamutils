@@ -8,7 +8,7 @@
 	<!-- There are 2 package sources defined in your configuration. When using central package management, please map your
  package sources with package source mapping -->
 	<NoWarn>$(NoWarn);NU1507</NoWarn>
-	<PackageVersion>0.0.8</PackageVersion>
+	<PackageVersion>0.0.9</PackageVersion>
   </PropertyGroup>
   
   <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
