@@ -12,6 +12,7 @@
   </ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Moq" />
 		<PackageReference Include="xunit.runner.console">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

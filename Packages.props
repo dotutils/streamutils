@@ -2,4 +2,7 @@
   <Import Project="dependabot\Packages.props" />
   <ItemGroup>
   </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="Moq" Version="4.16.1" />
+  </ItemGroup>
 </Project>
