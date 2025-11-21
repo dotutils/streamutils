@@ -17,7 +17,6 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo> 
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <NoWarn>CS8021</NoWarn>
-    <NoBuild>true</NoBuild>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     
